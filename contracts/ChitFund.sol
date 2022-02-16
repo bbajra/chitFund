@@ -86,10 +86,7 @@ contract ChitFund {
             investors[msg.sender].hasJoined,
             "You are not part of the current fund"
         );
-        require(
-            investors[msg.sender].isReadyToInvest,
-            "You have already contributed to this round, you cannot invest until after the jackpot of this round is announced"
-        );
+
         require( investors[msg.sender].installmentCounter < currentRound,
             "You have already contributed to this round, you cannot invest until after the jackpot of this round is announced"
         );
