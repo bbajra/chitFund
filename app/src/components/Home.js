@@ -55,7 +55,7 @@ const Home = ({
                       <span class="ml-auto text-gray-900">{viewfund[0]}</span>
                     </div>
                     <div class="flex border-t border-gray-300 py-2 ml-10">
-                      <span class="text-gray-900">jackpot</span>
+                      <span class="text-gray-900">Jackpot</span>
                       <span class="ml-auto text-gray-900">{jackpot} ether</span>
                     </div>
                     <div class="flex border-t border-gray-300 py-2 ml-10">
