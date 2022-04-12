@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.6.8;
 
 contract Insurance {
     enum Originator {
@@ -7,7 +7,9 @@ contract Insurance {
     }
     enum MemberState {
         Insured,
-        RequestInsurance
+        RequestInsurance,
+        NotInsured
+
     }
     enum UnderwriterDecision {
         Approved,
@@ -16,12 +18,17 @@ contract Insurance {
 
     MemberState public currentState;
 
+    uint256 public createDate;
+    uint256 public modifiedDate;
+
     address public memberAddress;
     address public underwriterAddress;
+    address public ownerAddress;
 
     mapping (address => UnderwriterDecision) underwriterDecision;
-    mapping (uint16 => address) public examiners;
-    uint16 public totalExaminers;
+    mapping (uint16 => address) public underwriters;
+
+    uint16 public totalUnderwriters;
     uint16 public neededApprovals;
 
     event StateTransitionNotAllowed(MemberState oldState, MemberState newState, address originary);
@@ -44,12 +51,12 @@ contract Insurance {
         _;
     }
 
-    function Insurance(address _manager, address _member) {
+    function ChitFundInsurance(address _manager, address _member) private {
         createDate = now;
         modifiedDate = now;
 
         ownerAddress = msg.sender;
-        managerAddress = _manager;
+        underwriterAddress = _manager;
 
         memberAddress = _member;
 
@@ -61,7 +68,7 @@ contract Insurance {
 
         for (uint16 i = 0; i < _underwriters.length; i++) {
             _underwriters[i] = _underwriters[i];
-            totalUnderWriters += 1;
+            totalUnderwriters += 1;
         }
 
         _needInsurance = _needInsurance;
@@ -75,7 +82,7 @@ contract Insurance {
         return checkUnderwriterDecision();
     }
 
-    function transitionState(MemberState newState) returns (bool) {
+    function transitionState(MemberState newState) public returns (bool) {
         if (!isTransitionAllowed(uint(currentState), uint(newState))) {
             StateTransitionNotAllowed(currentState, newState, msg.sender);
             return false;
@@ -86,13 +93,13 @@ contract Insurance {
         return true;
     }
 
-    function isOriginatorType(Originator originator) private constant returns (bool) {
+    function isOriginatorType(Originator originator) private pure returns (bool) {
         if (originator == Originator.Member) { return msg.sender == memberAddress; }
         if (originator == Originator.Underwriter) { return isUnderwriter(msg.sender); }
         return false;
     }
 
-    function isUnderwriter(address ad) private constant returns (bool) {
+    function isUnderwriter(address ad) private pure returns (bool) {
         for (uint16 i = 0; i < totalUnderwriters; i++) {
             if (underwriters[i] == ad) {
                 return true;
@@ -103,11 +110,11 @@ contract Insurance {
 
     function checkUnderwriterDecision() private returns (bool) {
         if (hasBeenApproved()) {
-            return transitionState(UnderwriterDecision.Approved);
+            return transitionState(MemberState.Insured);
         }
 
         if (hasBeenRejected()) {
-            return transitionState(UnderwriterDecision.Rejected);
+            return transitionState(MemberState.NotInsured);
         }
 
         return true;
@@ -127,21 +134,21 @@ contract Insurance {
         return total - rejects < neededApprovals;
     }
 
-    function getUnderwriterDecision() private constant returns (uint16 _totalUnderwriters, uint16 _approvals, uint16 _rejections) {
+    function getUnderwriterDecision() private pure returns (uint16 _totalUnderwriters, uint16 _approvals, uint16 _rejections) {
         _totalUnderwriters = totalUnderwriters;
         for (uint16 i = 0; i < totalUnderwriters; i++) {
             UnderwriterDecision decision = underwriterDecision[i];
-            if (decision == Underwriter.Approve) {
+            if (decision == UnderwriterDecision.Approved) {
                 _approvals += 1;
             }
-            if (decision == UnderwriterDecision.Reject) {
+            if (decision == UnderwriterDecision.Rejected) {
                 _rejections += 1;
             }
         }
         return;
     }
 
-    function isTransitionAllowed(uint state, uint newState) constant returns (bool) {
+    function isTransitionAllowed(uint state, uint newState) private pure returns (bool) {
         if (isOriginatorType(Originator.Member)) {
             if (state == uint(MemberState.RequestInsurance) && newState == uint(MemberState.Insured)) { return true; }
             if (state == uint(MemberState.Insured) && newState == uint(MemberState.Insured)) { return true; }
