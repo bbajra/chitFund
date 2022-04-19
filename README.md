@@ -7,6 +7,7 @@ You can see a live demo here https://chitfund.netlify.app/
 ## Table of Content:
 
 - [About The App](#about-the-app)
+- Architectural Diagram
 - [Homepage Screenshots](#screenshots)
 - Manager contract for chitfund
 - Chitfund factory contract for new funds
@@ -19,6 +20,10 @@ You can see a live demo here https://chitfund.netlify.app/
 ## About The App
 
 Chitfund project is an application that acts as a financial instrument for saving and borrowing money. It lets you contribute certain amount of crypto currency to a pool where members can borrow and save and can be treated as a source of funds for emergency and differnet purposes.
+
+## Architectural Diagram
+
+<img src="https://raw.githubusercontent.com/samarth30/chitFund/V1.0/Chitfund_Architectural_Diagram_Web3.png"/>
 
 ## Homepage Screenshots
 
