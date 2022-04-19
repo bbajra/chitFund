@@ -23,7 +23,7 @@ Chitfund project is an application that acts as a financial instrument for savin
 
 ## Architectural Diagram
 
-<img src="https://raw.githubusercontent.com/samarth30/chitFund/V1.0/Chitfund_Architectural_Diagram_Web3.png"/>
+<img src="https://raw.githubusercontent.com/Maghribi-Foundation/chitFund/V1.0/Chitfund_Architectural_Diagram_Web3.png"/>
 
 ## Homepage Screenshots
 
