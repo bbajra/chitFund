@@ -84,6 +84,7 @@ Prerequisites
 1. Install metamask https://metamask.io/
 2. Configure metamask on testnet https://devtonight.com/posts/metamask-testnet-wallet-setup-for-blockchain-development#:~:text=Add%20Custom%20Testnet%20Networks%20To,%2C%20RPC%20URL%2C%20chain%20ID
 3. collect some eth in your metamask wallet via a faucet https://faucets.chain.link/rinkeby
+   https://faucets.chain.link/
 
 #### Deployment instructions
 
